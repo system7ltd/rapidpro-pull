@@ -2,6 +2,10 @@ sudo: false
 
 language: python
 
+cache:
+  directories:
+    - $HOME/.pyenv
+
 matrix:
   include:
     - os: linux
@@ -13,27 +17,10 @@ matrix:
       sudo: required
 
 before_install:
-  - if [[ "$TRAVIS_OS_NAME" == 'osx' ]]; then
-      brew update || brew update;
-      brew outdated pyenv || brew upgrade pyenv;
-    fi
+  - source .travis/before_install.sh
 
 install:
-  - if [[ "$TRAVIS_OS_NAME" == 'osx' ]]; then
-      export PATH="~/.pyenv/bin:$PATH";
-      eval "$(pyenv init -)";
-      eval "$(pyenv virtualenv-init -)";
-      pyenv versions
-      pyenv install pypy-5.6.0;
-      pyenv global system pypy-5.6.0;
-      pyenv versions
-    fi
-  - which python
-  - which pypy
-  - pip install -U pip
-  - pip install tox tox-travis
-  - which tox
-  - pip install -e .[development]
+  - source .travis/install.sh
 
 script: tox
 
