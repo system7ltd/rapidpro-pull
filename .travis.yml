@@ -1,28 +1,23 @@
-language: python
-
 sudo: false
 
 matrix:
   include:
-    - os: linux
-      python:
-        - "pypy"
-        - "2.7"
     - os: osx
       sudo: required
       language: generic
 
+before_install:
+  - if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
+      brew update || brew update;
+      brew outdated pyenv || brew upgrade pyenv;
+    fi
+
 install:
   - if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
-      brew update;
-      brew install pyenv;
-      if [[ "${TOXENV}" == "py27" ]]; then
-        pyenv install 2.7.13;
-        pyenv global 2.7.11;
-      elif [[ "${TOXENV}" == "pypy" ]]; then
-        pyenv install pypy-5.6.0;
-        pyenv global pypy-5.6.0;
-      fi
+      pyenv install 2.7.13;
+      pyenv global 2.7.11;
+      pyenv install pypy-5.6.0;
+      pyenv global pypy-5.6.0;
     fi
   - which python
   - pip install -U pip
