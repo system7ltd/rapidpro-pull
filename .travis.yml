@@ -14,7 +14,6 @@ matrix:
       python: 2.7
     - os: osx
       language: generic
-      sudo: required
 
 before_install:
   - source .travis/before_install.sh
